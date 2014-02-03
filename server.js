@@ -1,5 +1,6 @@
 var express = require('express'),
-    stylus = require('stylus');
+    stylus = require('stylus'),
+    mongoose = require('mongoose');
 
 var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -22,6 +23,14 @@ app.configure(function() {
     ));
 
     app.use(express.static(__dirname + '/public'));
+});
+
+mongoose.connect('mongodb://localhost/multivision');
+var db = mongoose.connection;
+
+db.on('error', console.error.bind(console, "Connection Error..."));
+db.once('open', function callback() {
+    console.log('multivision db opened');
 });
 
 app.get('/partials/:partialPath', function(req, res) {
