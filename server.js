@@ -25,7 +25,12 @@ app.configure(function() {
     app.use(express.static(__dirname + '/public'));
 });
 
-mongoose.connect('mongodb://localhost/multivision');
+if(env === 'development') {
+    mongoose.connect('mongodb://localhost/multivision');
+} else {
+    mongoose.connect('mongodb://multivision:multivision@ds027789.mongolab.com:27789/multivision');
+}
+
 var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, "Connection Error..."));
@@ -50,6 +55,6 @@ app.get('*', function(req, res) {
     });
 });
 
-var port = 3030;
+var port = process.env.PORT || 3030;
 app.listen(port);
 console.log("Listening on port: " + port);
