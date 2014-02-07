@@ -8,4 +8,18 @@ module.exports = function(config) {
     db.once('open', function callback() {
         console.log('MultiVision db connection opened');
     });
+
+    var userSchema = mongoose.Schema({
+      firstName: String,
+      lastName: String,
+      userName: String,
+    });
+    var User = mongoose.model('User', userSchema);
+
+    User.find({}).exec(function(err, collection) {
+      if (collection.length === 0) {
+        User.create({firstName: 'Admin', lastName: 'Of MultiVision', userName: 'admin'});
+      };
+    });
+
 }
